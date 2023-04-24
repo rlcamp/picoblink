@@ -13,7 +13,7 @@ These assume a vanilla ARM64 Mac running Ventura, with Xcode or at least its com
 ### Build this code
 
 - `mkdir build` in this directory
-- `cd build && PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-12.2.rel1-darwin-arm64-arm-none-eabi/bin cmake .. && cd ..`
+- `cd build && PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-12.2.mpacbti-rel1-darwin-arm64-arm-none-eabi/bin cmake .. && cd ..`
 - `make -C build -j4`
 
 ### Upload and run this code
