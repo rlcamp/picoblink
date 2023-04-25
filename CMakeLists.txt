@@ -14,7 +14,7 @@ add_executable(blink
 )
 
 # Add pico_stdlib library which aggregates commonly used features
-target_link_libraries(blink pico_stdlib)
+target_link_libraries(blink pico_stdlib cmsis_core)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(blink)
