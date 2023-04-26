@@ -19,7 +19,8 @@ static int one_interval_has_elapsed(unsigned long interval_ticks) {
 
 int main() {
     set_sys_clock_48mhz();
-    SysTick_Config(12000000UL);
+    const unsigned tick_period_ms = 250;
+    SysTick_Config((48000000ULL * tick_period_ms + 500) / 1000ULL);
 
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
