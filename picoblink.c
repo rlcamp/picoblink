@@ -18,20 +18,17 @@ static int one_interval_has_elapsed(unsigned long interval_ticks) {
 }
 
 int main() {
-    /* 25 for pico, 13 for adafruit feather rp2040 */
-    static const unsigned pin = PICO_DEFAULT_LED_PIN;
-
     set_sys_clock_48mhz();
     SysTick_Config(12000000UL);
 
-    gpio_init(pin);
-    gpio_set_dir(pin, GPIO_OUT);
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
     while (true) {
-        gpio_put(pin, 1);
+        gpio_put(PICO_DEFAULT_LED_PIN, 1);
         while (!one_interval_has_elapsed(2)) continue;
 
-        gpio_put(pin, 0);
+        gpio_put(PICO_DEFAULT_LED_PIN, 0);
         while (!one_interval_has_elapsed(1)) continue;
     }
 }
