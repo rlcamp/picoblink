@@ -9,7 +9,7 @@ void SysTick_Handler(void) {
 
 static int one_interval_has_elapsed(unsigned long interval_ticks) {
     static unsigned long prev;
-    if (ticks - prev < interval_ticks) {
+    if (*(volatile unsigned long *)&ticks - prev < interval_ticks) {
         __WFI();
         return 0;
     }
