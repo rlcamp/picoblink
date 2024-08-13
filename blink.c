@@ -4,6 +4,7 @@
 #include "hardware/irq.h"
 #include "hardware/sync.h"
 #include "hardware/pll.h"
+#include "RP2040.h"
 
 #define LED_DELAY_US 250000
 
@@ -32,7 +33,16 @@ void yield(void) {
 int main() {
     /* this is not a cpu intensive application, just run at 48 MHz */
     set_sys_clock_48mhz();
-    /* TODO: power consumption is still much higher than expected */
+
+    /* disable systick */
+    SysTick->CTRL = 0;
+
+    /* while asleep, only clock the timer */
+    scb_hw->scr |= M0PLUS_SCR_SLEEPDEEP_BITS;
+    clocks_hw->sleep_en0 = 0;
+    clocks_hw->sleep_en1 = CLOCKS_ENABLED1_CLK_SYS_TIMER_BITS;
+
+    /* TODO: power consumption is still higher than expected */
 
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
