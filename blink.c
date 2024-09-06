@@ -41,7 +41,8 @@ int main() {
     scb_hw->scr |= M33_SCR_SLEEPDEEP_BITS;
 
     /* TODO: downselect these further */
-    clocks_hw->sleep_en0 = (CLOCKS_SLEEP_EN0_CLK_SYS_PSM_BITS |
+    clocks_hw->sleep_en0 = (CLOCKS_SLEEP_EN0_CLK_SYS_SIO_BITS |
+                            CLOCKS_SLEEP_EN0_CLK_SYS_PSM_BITS |
                             CLOCKS_SLEEP_EN0_CLK_SYS_RESETS_BITS |
                             CLOCKS_SLEEP_EN0_CLK_SYS_PADS_BITS |
                             CLOCKS_SLEEP_EN0_CLK_SYS_IO_BITS |
