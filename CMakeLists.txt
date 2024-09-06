@@ -1,4 +1,4 @@
-# invoke using: mkdir -p build && cd build && PICO_SDK_PATH=~/Downloads/pico-sdk/ PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-13.3.rel1-darwin-arm64-arm-none-eabi/bin cmake .. -DPICO_BOARD=adafruit_feather_rp2040 && cd ..
+# invoke using: mkdir -p build && cd build && PICO_SDK_PATH=~/Downloads/pico-sdk/ PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-13.3.rel1-darwin-arm64-arm-none-eabi/bin cmake .. -DPICO_BOARD=pico2 && cd ..
 
 cmake_minimum_required(VERSION 3.13)
 

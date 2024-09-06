@@ -15,11 +15,10 @@ These assume a vanilla ARM64 Mac running Sonoma, with Xcode or at least its comm
 
 ### Build this code
 
-- `mkdir build` in this directory
-- `cd build && PICO_SDK_PATH=~/Downloads/pico-sdk/ PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-13.3.rel1-darwin-arm64-arm-none-eabi/bin cmake .. && cd ..`
+- `mkdir -p build && cd build && PICO_SDK_PATH=~/Downloads/pico-sdk/ PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-13.3.rel1-darwin-arm64-arm-none-eabi/bin cmake .. -DPICO_BOARD=pico2 && cd ..`
 - `make -C build -j4`
 
 ### Upload and run this code
 
-- Hold down BOOTSEL and press RESET
-- `cp blink.uf2 /Volumes/RPI-RP2`
+- Hold down BOOTSEL while plugging into USB
+- `cp build/blink.uf2 /Volumes/RP2350`
