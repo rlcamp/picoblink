@@ -27,6 +27,7 @@ static void alarm_irq(void) {
 
 void yield(void) {
     /* we could do context switching here for cooperative multitasking if we wanted */
+    __dsb();
     __wfe();
 }
 
