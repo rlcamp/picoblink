@@ -16,7 +16,7 @@ These assume a vanilla ARM64 Mac running Sonoma, with Xcode or at least its comm
 ### Build this code
 
 - `mkdir -p build && cd build && PICO_SDK_PATH=~/Downloads/pico-sdk/ PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-14.2.rel1-darwin-arm64-arm-none-eabi/bin cmake .. -DPICO_BOARD=pico2 && cd ..`
-- `make -C build -j4`
+- `PICO_SDK_PATH=~/Downloads/pico-sdk/ PICO_TOOLCHAIN_PATH=~/Downloads/arm-gnu-toolchain-14.2.rel1-darwin-arm64-arm-none-eabi/bin make -C build -j4`
 
 ### Upload and run this code
 
