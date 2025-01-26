@@ -76,11 +76,11 @@ int main() {
 
     unsigned alarms_acknowledged = 0;
     while (1) {
-        gpio_put(PICO_DEFAULT_LED_PIN, 1);
-        while (*(volatile unsigned *)&alarms == alarms_acknowledged) yield();
-        alarms_acknowledged++;
+        if (!(alarms_acknowledged % 4))
+            gpio_put(PICO_DEFAULT_LED_PIN, 1);
+        else
+            gpio_put(PICO_DEFAULT_LED_PIN, 0);
 
-        gpio_put(PICO_DEFAULT_LED_PIN, 0);
         while (*(volatile unsigned *)&alarms == alarms_acknowledged) yield();
         alarms_acknowledged++;
     }
