@@ -68,8 +68,8 @@ int main() {
 
     /* enable interrupt for alarm */
     hw_set_bits(&timer_hw->inte, 1u << ALARM_NUM);
-    irq_set_exclusive_handler(hardware_alarm_get_irq_num(timer_hw, ALARM_NUM), alarm_irq);
-    irq_set_enabled(hardware_alarm_get_irq_num(timer_hw, ALARM_NUM), true);
+    irq_set_exclusive_handler(hardware_alarm_get_irq_num(ALARM_NUM), alarm_irq);
+    irq_set_enabled(hardware_alarm_get_irq_num(ALARM_NUM), true);
 
     /* first tick will be one interval from now */
     timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + LED_DELAY_US;
