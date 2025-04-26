@@ -1,17 +1,14 @@
 ## Instructions
 
-These assume a vanilla ARM64 Mac running Sonoma, with Xcode or at least its command line tools, without Homebrew.
+These assume a vanilla ARM64 Mac running Sonoma, with Xcode or at least its command line tools, *without* Homebrew.
 
 ### Obtain prerequisites
 
-- Build and install xz from source (macOS doesn't come with it, but macOS tar WILL use it to extract .tar.xz if present)
-- Build and install cmake from source
-- Download a prebuilt gcc-arm-none-eabi from arm (also satisfies newlib dep) and extract it in ~/Downloads/
+- Build and install [https://cmake.org/download/] from source using `./configure && make && sudo make install`
 
-    curl -LO https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-14.2.rel1-aarch64-arm-none-eabi.tar.xz
-    tar Jxf arm-gnu-toolchain-14.2.rel1-aarch64-arm-none-eabi.tar.xz
+- Download the latest Arm GNU Toolchain .pkg file (or 13.1 if on an Intel Mac) from [https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads] and install it
 
-- git clone pico-sdk, also in ~/Downloads/
+- in `~/Downloads/`, run `git clone --depth 1 https://github.com/raspberrypi/pico-sdk.git && cd pico-sdk && git submodule update --init`
 
 ### Build this code
 
