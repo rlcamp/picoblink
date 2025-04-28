@@ -41,27 +41,10 @@ int main() {
     /* while asleep, only clock the timer */
     scb_hw->scr |= M33_SCR_SLEEPDEEP_BITS;
 
-    /* TODO: downselect these further */
-    clocks_hw->sleep_en0 = (CLOCKS_SLEEP_EN0_CLK_SYS_SIO_BITS |
-                            CLOCKS_SLEEP_EN0_CLK_SYS_PSM_BITS |
-                            CLOCKS_SLEEP_EN0_CLK_SYS_RESETS_BITS |
-                            CLOCKS_SLEEP_EN0_CLK_SYS_PADS_BITS |
-                            CLOCKS_SLEEP_EN0_CLK_SYS_IO_BITS |
-                            CLOCKS_SLEEP_EN0_CLK_SYS_BUSFABRIC_BITS);
-
-    clocks_hw->sleep_en1 = (CLOCKS_SLEEP_EN1_CLK_SYS_TIMER1_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_TIMER0_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_REF_TICKS_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM9_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM8_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM7_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM6_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM5_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM4_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM3_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM2_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM1_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_SRAM0_BITS);
+    /* TODO: figure out if this combination of things is stable */
+    clocks_hw->sleep_en0 = 0;
+    clocks_hw->sleep_en1 = (CLOCKS_SLEEP_EN1_CLK_SYS_TIMER0_BITS |
+                            CLOCKS_SLEEP_EN1_CLK_REF_TICKS_BITS);
 
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
