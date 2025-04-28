@@ -38,7 +38,7 @@ add_executable(blink
 )
 
 # pull in common dependencies
-target_link_libraries(blink pico_stdlib cmsis_core)
+target_link_libraries(blink pico_stdlib hardware_xosc cmsis_core)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(blink)

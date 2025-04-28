@@ -1,4 +1,6 @@
 #include "pico/stdlib.h"
+#include "hardware/xosc.h"
+#include "hardware/structs/rosc.h"
 #include "hardware/clocks.h"
 #include "hardware/timer.h"
 #include "hardware/irq.h"
@@ -31,9 +33,27 @@ void yield(void) {
     __wfe();
 }
 
+void run_from_xosc(void) {
+    clock_configure_undivided(clk_ref, CLOCKS_CLK_REF_CTRL_SRC_VALUE_XOSC_CLKSRC, 0, XOSC_MHZ * MHZ);
+    clock_configure_undivided(clk_sys, CLOCKS_CLK_SYS_CTRL_SRC_VALUE_CLK_REF, 0, XOSC_MHZ * MHZ);
+
+    clock_stop(clk_usb);
+    clock_stop(clk_adc);
+
+    clock_configure_undivided(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_MHZ * MHZ);
+
+    /* disable PLLs */
+    pll_deinit(pll_sys);
+    pll_deinit(pll_usb);
+
+    /* disable rosc and wait for it to be stopped */
+    rosc_hw->ctrl = (rosc_hw->ctrl & ~ROSC_CTRL_ENABLE_BITS) | (ROSC_CTRL_ENABLE_VALUE_DISABLE << ROSC_CTRL_ENABLE_LSB);
+    while (rosc_hw->status & ROSC_STATUS_STABLE_BITS);
+}
+
 int main() {
     /* this is not a cpu intensive application, just run at 48 MHz */
-    set_sys_clock_48mhz();
+    run_from_xosc();
 
     /* disable systick */
     SysTick->CTRL = 0;
