@@ -53,7 +53,7 @@ void run_from_xosc(void) {
 }
 
 int main() {
-    /* this is not a cpu intensive application, just run at 48 MHz */
+    /* this is not a cpu intensive application, just run at 12 MHz */
     run_from_xosc();
 
     /* disable systick */
