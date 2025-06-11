@@ -8,8 +8,6 @@
 #include "hardware/pll.h"
 #include "RP2350.h"
 
-#define LED_DELAY_US 250000
-
 #define ALARM_NUM 0
 
 void yield(void) {
@@ -77,8 +75,11 @@ int main() {
     hw_set_bits(&timer_hw->inte, 1u << ALARM_NUM);
     irq_set_enabled(hardware_alarm_get_irq_num(ALARM_NUM), false);
 
-    /* first tick will be one interval from now */
-    timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + LED_DELAY_US;
+    /* time intervals in microseconds for blink pattern */
+    const unsigned period_us = 2000000, on_us = 30000;
+
+    /* first tick will be one period from now */
+    timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + period_us;
 
     for (unsigned alarms = 0;; alarms++) {
         /* repeatedly sleep, until timer interrupt becomes pending */
@@ -89,12 +90,18 @@ int main() {
         hw_clear_bits(&timer_hw->intr, 1U << ALARM_NUM);
         irq_clear(hardware_alarm_get_irq_num(ALARM_NUM));
 
-        /* increment and rearm */
-        timer_hw->alarm[ALARM_NUM] += LED_DELAY_US;
-
-        if (!(alarms % 4))
+        if (!(alarms % 2)) {
+            /* turn on LED */
             gpio_put(PICO_DEFAULT_LED_PIN, 1);
-        else
+
+            /* increment and rearm */
+            timer_hw->alarm[ALARM_NUM] += on_us;
+        } else {
+            /* turn off LED */
             gpio_put(PICO_DEFAULT_LED_PIN, 0);
+
+            /* increment and rearm */
+            timer_hw->alarm[ALARM_NUM] += period_us - on_us;
+        }
     }
 }
