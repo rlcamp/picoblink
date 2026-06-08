@@ -1,21 +1,9 @@
-# invoke using: mkdir -p build && cd build && cmake .. -DPICO_BOARD=pico2 && cd ..
+# invoke using: mkdir -p build && cd build && cmake .. -DPICO_BOARD=pico2 -DPICO_SDK_PATH=${HOME}/Downloads/pico-sdk/ -DPICO_TOOLCHAIN_PATH=/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/ && cd ..
 
 cmake_minimum_required(VERSION 3.13)
 
-if (NOT DEFINED ENV{PICO_SDK_PATH})
-  set(ENV{PICO_SDK_PATH} "~/Downloads/pico-sdk/")
-endif()
-
-if (NOT DEFINED PICO_TOOLCHAIN_PATH)
-    execute_process(
-        COMMAND bash -c "dirname $((find $\{HOME\}/Downloads -name arm-none-eabi-gcc | sort; find /Applications/ArmGNUToolchain -name arm-none-eabi-gcc | sort) | tail -n1)"
-        OUTPUT_VARIABLE PICO_TOOLCHAIN_PATH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
-endif()
-
 # initialize the SDK directly
-include($ENV{PICO_SDK_PATH}/pico_sdk_init.cmake)
+include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
 project(my_project)
 
