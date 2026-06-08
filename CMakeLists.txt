@@ -5,7 +5,8 @@ cmake_minimum_required(VERSION 3.13)
 # initialize the SDK directly
 include(${PICO_SDK_PATH}/pico_sdk_init.cmake)
 
-project(my_project)
+# note CXX is only necessary for new_delete.cpp in pico_runtime
+project(my_project C ASM CXX)
 
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
