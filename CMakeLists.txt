@@ -14,10 +14,14 @@ pico_sdk_init()
 # add some warning flags
 set("CMAKE_C_FLAGS" "${CMAKE_C_FLAGS}  -Wall -Wextra -Wshadow")
 
-# rest of your project
-add_executable(blink
+set(SOURCES
     blink.c
 )
+
+set_source_files_properties(${SOURCES} PROPERTIES COMPILE_OPTIONS "-Wall;-Wextra;-Wshadow;-Wdouble-promotion")
+
+# rest of your project
+add_executable(blink ${SOURCES})
 
 # pull in common dependencies
 target_link_libraries(blink pico_stdlib hardware_xosc cmsis_core)
