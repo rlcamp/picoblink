@@ -1,4 +1,4 @@
-#include "pico/stdlib.h"
+#include "hardware/gpio.h"
 #include "hardware/xosc.h"
 #include "hardware/structs/rosc.h"
 #include "hardware/clocks.h"
