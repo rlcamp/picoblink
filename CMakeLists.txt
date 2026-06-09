@@ -11,9 +11,6 @@ project(my_project C ASM CXX)
 # initialize the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-# add some warning flags
-set("CMAKE_C_FLAGS" "${CMAKE_C_FLAGS}  -Wall -Wextra -Wshadow")
-
 set(SOURCES
     blink.c
 )
