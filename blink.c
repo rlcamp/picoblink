@@ -24,7 +24,7 @@ void run_from_xosc(void) {
     clock_stop(clk_adc);
     clock_stop(clk_hstx);
 
-    clock_configure_undivided(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_CLK_SYS, XOSC_MHZ * MHZ);
+    clock_configure_undivided(clk_peri, 0, CLOCKS_CLK_PERI_CTRL_AUXSRC_VALUE_XOSC_CLKSRC, XOSC_MHZ * MHZ);
 
     /* disable PLLs */
     pll_deinit(pll_sys);
