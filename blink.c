@@ -6,6 +6,8 @@
 #include "hardware/irq.h"
 #include "hardware/sync.h"
 #include "hardware/pll.h"
+#include "hardware/powman.h"
+
 #include "RP2350.h"
 
 #define ALARM_NUM 0
@@ -51,11 +53,12 @@ int main() {
     clocks_hw->sleep_en0 = (CLOCKS_SLEEP_EN0_CLK_SYS_SIO_BITS |
                             CLOCKS_SLEEP_EN0_CLK_SYS_PADS_BITS |
                             CLOCKS_SLEEP_EN0_CLK_SYS_IO_BITS |
+                            CLOCKS_SLEEP_EN0_CLK_SYS_POWMAN_BITS |
+                            CLOCKS_SLEEP_EN0_CLK_REF_POWMAN_BITS |
                             CLOCKS_SLEEP_EN0_CLK_SYS_BUSFABRIC_BITS);
 
     clocks_hw->sleep_en1 = (CLOCKS_SLEEP_EN1_CLK_SYS_XIP_BITS |
                             CLOCKS_SLEEP_EN1_CLK_REF_TICKS_BITS |
-                            CLOCKS_SLEEP_EN1_CLK_SYS_TIMER0_BITS |
                             CLOCKS_SLEEP_EN1_CLK_SYS_SRAM9_BITS |
                             CLOCKS_SLEEP_EN1_CLK_SYS_SRAM8_BITS |
                             CLOCKS_SLEEP_EN1_CLK_SYS_SRAM7_BITS |
@@ -67,41 +70,45 @@ int main() {
                             CLOCKS_SLEEP_EN1_CLK_SYS_SRAM1_BITS |
                             CLOCKS_SLEEP_EN1_CLK_SYS_SRAM0_BITS);
 
-
     gpio_init(PICO_DEFAULT_LED_PIN);
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
-    /* enable interrupt for alarm in peripheral, but not in nvic */
-    hw_set_bits(&timer_hw->inte, 1u << ALARM_NUM);
-    irq_set_enabled(hardware_alarm_get_irq_num(ALARM_NUM), false);
+    /* this is a misnomer, "using xosc" means using it via clk_ref */
+    powman_timer_set_1khz_tick_source_xosc_with_hz(clock_get_hz(clk_ref));
+    powman_timer_start();
 
     /* time intervals in microseconds for blink pattern */
-    const unsigned period_us = 2000000, on_us = 30000;
+    const unsigned period_ms = 2000, on_ms = 30;
 
-    /* first tick will be one period from now */
-    timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + period_us;
+    uint64_t blink_timer_next = powman_timer_get_ms();
+    powman_enable_alarm_wakeup_at_ms(blink_timer_next + period_ms);
+
+    irq_set_enabled(POWMAN_IRQ_TIMER, false);
 
     for (unsigned alarms = 0;; alarms++) {
         /* repeatedly sleep, until timer interrupt becomes pending */
-        while (!(timer_hw->intr & (1U << ALARM_NUM)))
+        while (!(powman_hw->intr & POWMAN_INTR_TIMER_BITS))
             yield();
 
         /* acknowledge and clear interrupt in timer and nvic */
-        hw_clear_bits(&timer_hw->intr, 1U << ALARM_NUM);
-        irq_clear(hardware_alarm_get_irq_num(ALARM_NUM));
+        powman_timer_disable_alarm();
+        powman_clear_alarm();
+        irq_clear(POWMAN_IRQ_TIMER);
 
         if (!(alarms % 2)) {
             /* turn on LED */
             gpio_put(PICO_DEFAULT_LED_PIN, 1);
 
             /* increment and rearm */
-            timer_hw->alarm[ALARM_NUM] += on_us;
+            blink_timer_next += on_ms;
         } else {
             /* turn off LED */
             gpio_put(PICO_DEFAULT_LED_PIN, 0);
 
             /* increment and rearm */
-            timer_hw->alarm[ALARM_NUM] += period_us - on_us;
+            blink_timer_next += period_ms - on_ms;
         }
+
+        powman_enable_alarm_wakeup_at_ms(blink_timer_next);
     }
 }
