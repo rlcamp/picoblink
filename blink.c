@@ -10,8 +10,6 @@
 
 #include "RP2350.h"
 
-#define ALARM_NUM 0
-
 void yield(void) {
     /* we could do context switching here for cooperative multitasking if we wanted */
     __dsb();
