@@ -79,6 +79,7 @@ int main() {
                              CLOCKS_WAKE_EN0_CLK_SYS_I2C0_BITS |
                              CLOCKS_WAKE_EN0_CLK_SYS_HSTX_BITS |
                              CLOCKS_WAKE_EN0_CLK_HSTX_BITS |
+                             CLOCKS_WAKE_EN0_CLK_SYS_DMA_BITS |
                              CLOCKS_WAKE_EN0_CLK_SYS_ADC_BITS |
                              CLOCKS_WAKE_EN0_CLK_ADC_BITS));
 
