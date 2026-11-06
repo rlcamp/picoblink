@@ -45,9 +45,6 @@ int main() {
     /* this is not a cpu intensive application, just run at 12 MHz */
     run_from_xosc();
 
-    /* disable systick */
-    SysTick->CTRL = 0;
-
     scb_hw->scr |= M33_SCR_SLEEPDEEP_BITS;
 
     /* turn off clocks to a bunch of stuff we aren't using */
